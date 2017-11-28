@@ -5,6 +5,9 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { SharedModule } from './../shared/shared.module';
 
+// Components
+import { MealFormComponent } from './components/meal-form/meal-form.component';
+
 // Containers
 import { MealsComponent } from './containers/meals/meals.component';
 import { MealComponent } from './containers/meal/meal.component';
@@ -23,7 +26,8 @@ export const ROUTES: Routes = [
   ],
   declarations: [
     MealsComponent,
-    MealComponent
+    MealComponent,
+    MealFormComponent
   ],
   providers: []
 })
