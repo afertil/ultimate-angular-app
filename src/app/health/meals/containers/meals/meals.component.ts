@@ -10,8 +10,34 @@ import { MealsService, Meal } from '../../../shared/services/meals/meals.service
   selector: 'app-meals',
   styleUrls: ['meals.component.scss'],
   template: `
-    <div>
-      {{ meals$ | async | json }}
+    <div class="meals">
+      <div class="meals__title">
+        <h1>
+          <img src="/assets/food.svg">
+          Your meals
+        </h1>
+        <a
+          class="btn__add"
+          [routerLink]="['../meals/new']">
+          <img src="assets/add-white.svg">
+          New meal
+        </a>
+      </div>
+
+      <div *ngIf="meals$ | async as meals; else loading;">
+        <div class="message" *ngIf="!meals.length">
+          <img src="assets/face.svg">
+          No meals, add a new meal to start
+        </div>
+        <!-- meals ngFor -->
+      </div>
+
+      <ng-template #loading>
+        <div class="message">
+          <img src="assets/loading.svg">
+          Fetching meals...
+        </div>
+      </ng-template>
     </div>
   `
 })
