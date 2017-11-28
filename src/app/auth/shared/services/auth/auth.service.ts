@@ -53,7 +53,6 @@ export class AuthService {
   }
 
   logoutUser() {
-    console.log('auth.service');
     return this.af.auth.signOut();
   }
 }
