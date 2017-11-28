@@ -29,7 +29,10 @@ import { MealsService, Meal } from '../../../shared/services/meals/meals.service
           <img src="assets/face.svg">
           No meals, add a new meal to start
         </div>
-        <!-- meals ngFor -->
+        <app-list-item
+          *ngFor="let meal of meals"
+          [item]="meal">
+        </app-list-item>
       </div>
 
       <ng-template #loading>
