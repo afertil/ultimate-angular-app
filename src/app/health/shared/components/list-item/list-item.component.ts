@@ -62,11 +62,10 @@ export class ListItemComponent {
   }
 
   removeItem() {
-    console.log(this.item);
     this.remove.emit(this.item);
   }
 
   getRoute(item: any) {
-    return [`../meals`, item.$key];
+    return [`../meals`, item.key];
   }
 }

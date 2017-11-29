@@ -1,7 +1,10 @@
+import { Meal } from './meals.service';
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
 
 import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
+import { filter, map } from 'rxjs/operators';
 
 import { Store } from '../../../../../store';
 
@@ -17,22 +20,19 @@ export interface Meal {
 @Injectable()
 export class MealsService {
 
-  meals$: Observable<Meal[]> = this.db.list<Meal>(`meals/${this.uid}`).valueChanges()
-    .do(next => {
-      console.log(next);
-      this.store.set('meals', next);
-    });
+  storeData: any[];
 
-  /* meals$ = this.db.list<Meal>(`meals/${this.uid}`).snapshotChanges()
+  meals$: Observable<any> = this.db.list<Meal>(`meals/${this.uid}`).snapshotChanges()
     .map(actions => {
+      this.storeData = [];
+
       actions.map(action => {
-        // this.store.set('meals', ({ key: action.key, ...action.payload.val() }));
-        console.log(this.store.select<Meal[]>('meals'));
+        this.storeData.push(({ key: action.key, ...action.payload.val() }));
         return ({ key: action.key, ...action.payload.val() });
-      }).subscribe(items => {
-        return items.map(item => item.key);
       });
-    }); */
+
+      this.store.set('meals', this.storeData);
+    });
 
   constructor(
     private store: Store,
@@ -42,6 +42,16 @@ export class MealsService {
 
   get uid() {
     return this.authService.user.uid;
+  }
+
+  getMeal(key: string) {
+    if (!key) {
+      return Observable.of({});
+    }
+
+    return this.store.select<Meal[]>('meals')
+      .filter(Boolean)
+      .map(meals => meals.find((meal: Meal) => meal.key === key));
   }
 
   addMeal(meal: Meal) {
