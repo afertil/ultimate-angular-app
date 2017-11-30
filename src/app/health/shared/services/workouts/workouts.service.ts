@@ -9,19 +9,22 @@ import { Store } from '../../../../../store';
 
 import { AuthService } from '../../../../auth/shared/services/auth/auth.service';
 
-export interface Meal {
+export interface Workout {
   name: string;
-  ingredients: string[];
+  type: string;
+  strenght: any;
+  endurance: any;
+  timestamp: number;
   key: string;
   exists: () => boolean;
 }
 
 @Injectable()
-export class MealsService {
+export class WorkoutsService {
 
   storeData: any[];
 
-  meals$: Observable<any> = this.db.list<Meal>(`meals/${this.uid}`).snapshotChanges()
+  workouts$: Observable<any> = this.db.list<Workout>(`workouts/${this.uid}`).snapshotChanges()
     .map(actions => {
       this.storeData = [];
 
@@ -30,7 +33,7 @@ export class MealsService {
         return ({ key: action.key, ...action.payload.val() });
       });
 
-      this.store.set('meals', this.storeData);
+      this.store.set('workouts', this.storeData);
     });
 
   constructor(
@@ -43,25 +46,25 @@ export class MealsService {
     return this.authService.user.uid;
   }
 
-  getMeal(key: string) {
+  getWorkout(key: string) {
     if (!key) {
       return Observable.of({});
     }
 
-    return this.store.select<Meal[]>('meals')
+    return this.store.select<Workout[]>('workouts')
       .filter(Boolean)
-      .map(meals => meals.find((meal: Meal) => meal.key === key));
+      .map(workouts => workouts.find((workout: Workout) => workout.key === key));
   }
 
-  addMeal(meal: Meal) {
-    return this.db.list(`meals/${this.uid}`).push(meal);
+  addWorkout(workout: Workout) {
+    return this.db.list(`workouts/${this.uid}`).push(workout);
   }
 
-  updateMeal(key: string, meal: Meal) {
-    return this.db.object(`meals/${this.uid}/${key}`).update(meal);
+  updateWorkout(key: string, workout: Workout) {
+    return this.db.object(`workouts/${this.uid}/${key}`).update(workout);
   }
 
-  removeMeal(key: string) {
-    return this.db.list(`meals/${this.uid}`).remove(key);
+  removeWorkout(key: string) {
+    return this.db.list(`workouts/${this.uid}`).remove(key);
   }
 }
