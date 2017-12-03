@@ -22,6 +22,12 @@ import { Workout } from '../../../shared/services/workouts/workouts.service';
               Workout name is required
             </div>
           </label>
+          <label>
+          <h3>Type</h3>
+          <app-workout-type
+            formControlName="type">
+          </app-workout-type>
+        </label>
         </div>
         <div class="workout-form__details">
           <div *ngIf="form.get('type').value === 'strength'">
