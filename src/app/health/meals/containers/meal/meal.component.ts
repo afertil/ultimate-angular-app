@@ -30,13 +30,13 @@ import { Meal, MealsService } from './../../../shared/services/meals/meals.servi
           (update)="updateMeal($event)"
           (remove)="removeMeal($event)">
         </app-meal-form>
-        <ng-template #loading>
-          <div class="message">
-            <img src="/assets/loading.svg">
-            Fetching meal...
-          </div>
-        </ng-template>
       </div>
+      <ng-template #loading>
+      <div class="message">
+        <img src="/assets/loading.svg">
+        Fetching meal...
+      </div>
+    </ng-template>
     </div>
   `
 })
