@@ -15,8 +15,6 @@ import { AuthService } from './../../../../auth/shared/services/auth/auth.servic
 
 import { Meal } from '../../services/meals/meals.service';
 import { Workout } from '../../services/workouts/workouts.service';
-import { timestamp } from 'rxjs/operators/timestamp';
-
 
 export interface ScheduleItem {
   meals: Meal[];
@@ -42,6 +40,10 @@ export class ScheduleService {
 
   selected$ = this.section$
     .do((next: any) => this.store.set('selected', next));
+
+  list$ = this.section$
+    .map((value: any) => this.store.value[value.type])
+    .do((next: any) => this.store.set('list', next));
 
   schedule$: Observable<ScheduleItem[]> = this.date$
     .do((next: any) => this.store.set('date', next))
